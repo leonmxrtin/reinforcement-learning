@@ -75,11 +75,10 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="Terminal version of The Floor Is Slime.")
     parser.add_argument("--opponent", choices=["human", *DUMMY_PLAYERS], default="human")
     parser.add_argument("--track-length", type=int, default=10)
-    parser.add_argument("--max-rounds", type=int, default=200)
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args(argv)
 
-    game = Game(args.track_length, args.seed, args.max_rounds)
+    game = Game(args.track_length, args.seed)
     opponent = None if args.opponent == "human" else make_dummy_player(args.opponent, game, 1)
 
     print("The Floor Is Slime")
@@ -87,7 +86,7 @@ def main(argv=None):
     print("Controls: s=stay, j/1=jump, l/2=long jump")
     print("Opponent: " + ("human player" if opponent is None else opponent.name))
 
-    while game.winner is None and game.round < game.max_rounds:
+    while game.winner is None:
         print_board(game)
         play_turn(game, 0)
         if game.winner is None:
@@ -98,7 +97,7 @@ def main(argv=None):
             print(f"Slime changed on tiles: {text}")
 
     print_board(game)
-    print("\nGame over: draw." if game.winner is None else f"\nGame over: Player {game.winner + 1} wins!")
+    print(f"\nGame over: Player {game.winner + 1} wins!")
 
 
 if __name__ == "__main__":
