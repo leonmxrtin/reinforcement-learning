@@ -8,7 +8,7 @@
 \title{Tabular Reinforcement Learning for ``The Floor Is Slime!''}
 
 \author{
-\IEEEauthorblockN{Alejandro Leon Martin Lama}
+\IEEEauthorblockN{Alejandro León Martín Lama}
 \IEEEauthorblockA{
 Artificial Intelligence 2025/26\\
 Universidad de Sevilla\\
@@ -506,17 +506,18 @@ summaries under \texttt{outputs/}.
 
 The main command shape is:
 
-\begin{verbatim}
-./src/experiments.py --episodes 1000 5000 20000 \
-  --eval-games 1000 --seed 42 --max-rounds 200
-\end{verbatim}
+\noindent\texttt{./src/experiments.py}\\
+\texttt{--episodes 1000 5000 20000}\\
+\texttt{--eval-games 1000}\\
+\texttt{--seed 42}\\
+\texttt{--max-rounds 200}
 
 The 20-tile experiments use a higher maximum round limit:
 
-\begin{verbatim}
-./src/experiments.py --episodes 20000 \
-  --track-length 20 --max-rounds 5000
-\end{verbatim}
+\noindent\texttt{./src/experiments.py}\\
+\texttt{--episodes 20000}\\
+\texttt{--track-length 20}\\
+\texttt{--max-rounds 5000}
 
 \subsection{Compared Conditions}
 
@@ -765,10 +766,11 @@ slightly over baseline.
 The project can be reproduced using the scripts in \texttt{src/}. The most
 important command is:
 
-\begin{verbatim}
-./src/experiments.py --episodes 1000 5000 20000 \
-  --eval-games 1000 --seed 42 --max-rounds 200
-\end{verbatim}
+\noindent\texttt{./src/experiments.py}\\
+\texttt{--episodes 1000 5000 20000}\\
+\texttt{--eval-games 1000}\\
+\texttt{--seed 42}\\
+\texttt{--max-rounds 200}
 
 Outputs are written to:
 
@@ -779,25 +781,28 @@ Outputs are written to:
 
 The CSV files used for this report are:
 
-\begin{itemize}
-\item \texttt{experiment\_results\_reduced\_state.csv}
-\item \texttt{experiment\_results\_full\_state.csv}
-\item \texttt{experiment\_results\_track20\_reduced\_state.csv}
-\item \texttt{experiment\_results\_track20\_full\_state.csv}
-\end{itemize}
-
-Before final submission, the code and report should be checked so the reward
-configuration in \texttt{RewardConfig} matches the configuration saved in the
-reported result files. The result summaries used here record the balanced shaped
-reward with win $+10$, loss $-10$, step $-0.02$, progress $+0.20$, and fall
-$-1.0$.
+\begin{table}[h]
+\centering
+\caption{CSV result files used in the report}
+\label{tab:csvfiles}
+\begin{tabular}{ll}
+\toprule
+Condition & File in \texttt{outputs/results/} \\
+\midrule
+10 tiles, reduced & \texttt{reduced\_state.csv} \\
+10 tiles, full & \texttt{full\_state.csv} \\
+20 tiles, reduced & \texttt{track20\_reduced.csv} \\
+20 tiles, full & \texttt{track20\_full.csv} \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 To play against a saved policy, the command is:
 
-\begin{verbatim}
-./src/play_agent.py \
-  --policy outputs/policies/q_mixed_20000_seed42.json
-\end{verbatim}
+\noindent\texttt{./src/play\_agent.py}\\
+\texttt{--policy}\\
+\texttt{outputs/policies/}\\
+\texttt{q\_mixed\_20000\_seed42.json}
 
 The optional \texttt{--human-player}, \texttt{--seed}, \texttt{--track-length}, and
 \texttt{--max-rounds} arguments can be used to change the interactive setup. In
@@ -849,14 +854,24 @@ implementation in \texttt{rl.py}, including the Q-table structure, action
 selection, update rule, reward calculation, policy saving, and policy loading, was
 also manually implemented by the student.
 
+The tool used was ChatGPT/Codex, a conversational programming assistant accessed
+inside the local development workspace. It was able to read project files, inspect
+terminal output, propose code changes, run small verification commands, and help
+rewrite documentation. The interaction was iterative: the student asked questions
+about the design, requested code reviews, made manual changes, and then used the
+assistant to point out inconsistencies or missing functionality.
+
 The AI assistance was mainly used to review the implementation, identify possible
 bugs or design risks, and help build the experimental workflow around the core
 algorithm. In particular, it helped with experiment scripts, CSV/JSON result
 organization, timeout handling, interpretation of reduced-state versus full-state
 experiments, and drafting or restructuring parts of this report. It also helped
-add the command-line script for playing against a saved JSON policy. All final
-design decisions, code behavior, and experimental conclusions were reviewed by the
-student and should be understood before submission and defense.
+add the command-line script for playing against a saved JSON policy. The tool was
+not used as a substitute for understanding the algorithm: the student kept control
+over the game rules, the main Q-learning design, the final design decisions, and
+the interpretation accepted for the report. All final code behavior and
+experimental conclusions were reviewed by the student and are understood before
+being accepted as the final project submission.
 
 \begin{thebibliography}{4}
 
