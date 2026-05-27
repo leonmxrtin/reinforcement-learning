@@ -65,7 +65,7 @@ class QLearningPlayer(Player):
 
     def __init__(self, game, player_idx, q_table=None, epsilon=0.0):
         super().__init__(game, player_idx)
-        self.q_table = q_table or {}
+        self.q_table = q_table if q_table is not None else {}
         self.epsilon = epsilon
         self.alpha = 0.15
         self.gamma = 0.90
