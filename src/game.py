@@ -32,7 +32,7 @@ class Game:
         self.current_player = 0
     
     def legal_actions(self, player):
-        if self.winner is not None:
+        if player != self.current_player or self.winner is not None:
             return ()
         
         position = self.player_positions[player]
