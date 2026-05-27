@@ -1,0 +1,90 @@
+{
+  "training": {
+    "wins": 10668,
+    "losses": 9332,
+    "timeouts": 0
+  },
+  "training_config": {
+    "episodes": 20000,
+    "alpha": 0.15,
+    "gamma": 0.9,
+    "epsilon_start": 0.3,
+    "epsilon_end": 0.02,
+    "epsilon_decay": 0.9995,
+    "seed": 42,
+    "track_length": 10,
+    "max_rounds": 200,
+    "opponent": "mixed"
+  },
+  "reward_config": {
+    "win": 10.0,
+    "loss": -10.0,
+    "step": -0.02,
+    "progress": 0.2,
+    "fall": -1
+  },
+  "evaluations": {
+    "random": {
+      "games": 1000,
+      "wins": 626,
+      "losses": 374,
+      "timeouts": 0,
+      "win_rate": 0.626,
+      "loss_rate": 0.374,
+      "timeout_rate": 0.0,
+      "max_rounds": 200
+    },
+    "cautious": {
+      "games": 1000,
+      "wins": 651,
+      "losses": 349,
+      "timeouts": 0,
+      "win_rate": 0.651,
+      "loss_rate": 0.349,
+      "timeout_rate": 0.0,
+      "max_rounds": 200
+    },
+    "aggressive": {
+      "games": 1000,
+      "wins": 456,
+      "losses": 544,
+      "timeouts": 0,
+      "win_rate": 0.456,
+      "loss_rate": 0.544,
+      "timeout_rate": 0.0,
+      "max_rounds": 200
+    }
+  },
+  "random_baselines": {
+    "random": {
+      "games": 1000,
+      "wins": 500,
+      "losses": 500,
+      "timeouts": 0,
+      "win_rate": 0.5,
+      "loss_rate": 0.5,
+      "timeout_rate": 0.0,
+      "max_rounds": 200
+    },
+    "cautious": {
+      "games": 1000,
+      "wins": 394,
+      "losses": 606,
+      "timeouts": 0,
+      "win_rate": 0.394,
+      "loss_rate": 0.606,
+      "timeout_rate": 0.0,
+      "max_rounds": 200
+    },
+    "aggressive": {
+      "games": 1000,
+      "wins": 339,
+      "losses": 661,
+      "timeouts": 0,
+      "win_rate": 0.339,
+      "loss_rate": 0.661,
+      "timeout_rate": 0.0,
+      "max_rounds": 200
+    }
+  }
+}

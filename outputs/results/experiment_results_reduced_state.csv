@@ -1,0 +1,10 @@
+episodes,train_opponent,eval_opponent,seed,games,max_rounds,wins,losses,timeouts,win_rate,loss_rate,timeout_rate,random_baseline,improvement_pp,known_states,policy_path
+1000,mixed,random,42,1000,200,417,583,0,0.417,0.583,0.0,0.5,-8.3,764,outputs/policies/q_mixed_1000_seed42.json
+1000,mixed,cautious,42,1000,200,408,587,5,0.408,0.587,0.005,0.394,1.4,764,outputs/policies/q_mixed_1000_seed42.json
+1000,mixed,aggressive,42,1000,200,290,710,0,0.29,0.71,0.0,0.339,-4.9,764,outputs/policies/q_mixed_1000_seed42.json
+5000,mixed,random,42,1000,200,558,442,0,0.558,0.442,0.0,0.5,5.8,771,outputs/policies/q_mixed_5000_seed42.json
+5000,mixed,cautious,42,1000,200,572,428,0,0.572,0.428,0.0,0.394,17.8,771,outputs/policies/q_mixed_5000_seed42.json
+5000,mixed,aggressive,42,1000,200,425,575,0,0.425,0.575,0.0,0.339,8.6,771,outputs/policies/q_mixed_5000_seed42.json
+20000,mixed,random,42,1000,200,626,374,0,0.626,0.374,0.0,0.5,12.6,771,outputs/policies/q_mixed_20000_seed42.json
+20000,mixed,cautious,42,1000,200,651,349,0,0.651,0.349,0.0,0.394,25.7,771,outputs/policies/q_mixed_20000_seed42.json
+20000,mixed,aggressive,42,1000,200,456,544,0,0.456,0.544,0.0,0.339,11.7,771,outputs/policies/q_mixed_20000_seed42.json

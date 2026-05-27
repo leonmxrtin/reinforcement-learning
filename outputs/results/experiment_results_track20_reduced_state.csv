@@ -1,0 +1,4 @@
+episodes,train_opponent,eval_opponent,seed,games,max_rounds,wins,losses,timeouts,win_rate,loss_rate,timeout_rate,random_baseline,improvement_pp,known_states,policy_path
+20000,mixed,random,42,1000,5000,286,714,0,0.286,0.714,0.0,0.497,-21.1,4556,outputs/policies/q_mixed_20000_seed42.json
+20000,mixed,cautious,42,1000,5000,56,906,38,0.056,0.906,0.038,0.093,-3.7,4556,outputs/policies/q_mixed_20000_seed42.json
+20000,mixed,aggressive,42,1000,5000,210,790,0,0.21,0.79,0.0,0.388,-17.8,4556,outputs/policies/q_mixed_20000_seed42.json
