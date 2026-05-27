@@ -34,12 +34,8 @@ class TrainingConfig:
     opponent: str = "mixed"
 
 
-def action_key(action):
-    return action.name
-
-
 def empty_values():
-    return {action_key(action): 0.0 for action in ACTIONS}
+    return {action.name: 0.0 for action in ACTIONS}
 
 
 def state_key(game, player):
@@ -86,17 +82,17 @@ class QLearningPlayer(Player):
         if explore and self.game.rng.random() < self.epsilon:
             return self.game.rng.choice(legal)
         values = self.values(state_key(self.game, self.player_idx), create=explore)
-        best = max(values[action_key(action)] for action in legal)
-        return self.game.rng.choice([action for action in legal if values[action_key(action)] == best])
+        best = max(values[action.name] for action in legal)
+        return self.game.rng.choice([action for action in legal if values[action.name] == best])
 
     def update(self, key, action, reward, next_key, next_actions):
         values = self.values(key)
-        old = values[action_key(action)]
+        old = values[action.name]
         target = reward
         if next_key is not None:
             next_values = self.values(next_key)
-            target += self.gamma * max(next_values[action_key(action)] for action in next_actions)
-        values[action_key(action)] = old + self.alpha * (target - old)
+            target += self.gamma * max(next_values[action.name] for action in next_actions)
+        values[action.name] = old + self.alpha * (target - old)
 
     def copy_for(self, game, player):
         clone = QLearningPlayer(game, player, self.q_table, self.epsilon)
