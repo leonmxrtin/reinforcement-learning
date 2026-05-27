@@ -44,6 +44,12 @@ def empty_values():
 
 def state_key(game, player):
     other = 1 - player
+    # slime_mask = "".join("1" if slimy else "0" for slimy in game.slime_positions)
+    # parts = [
+    #     str(game.player_positions[player]),
+    #     str(game.player_positions[other]),
+    #     slime_mask,
+    # ]
     parts = [str(game.player_positions[player]), str(game.player_positions[other])]
     for current_player in (player, other):
         position = game.player_positions[current_player]
