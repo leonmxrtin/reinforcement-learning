@@ -136,10 +136,9 @@ def train(config=None, rewards=None):
             old_position = game.player_positions[0]
             action = learner.choose_action(explore=True)
             game.apply_action(0, action)
+
             if game.winner is None:
                 game.apply_action(1, opponent.choose_action())
-            if game.winner is None:
-                game.flip_tiles()
 
             reward = reward_for_round(game, rewards, old_position, action, game.winner)
             next_key = None if game.winner is not None else state_key(game, 0)
@@ -163,8 +162,6 @@ def evaluate(player, games=1000, track_length=10, opponent_name="balanced", seed
             game.apply_action(0, learner.choose_action())
             if game.winner is None:
                 game.apply_action(1, opponent.choose_action())
-            if game.winner is None:
-                game.flip_tiles()
         wins += int(game.winner == 0)
         losses += int(game.winner == 1)
     return {"games": games, "wins": wins, "losses": losses, "win_rate": wins / games}
@@ -180,8 +177,6 @@ def evaluate_dummy(player_name, games=1000, track_length=10, opponent_name="bala
             game.apply_action(0, player.choose_action())
             if game.winner is None:
                 game.apply_action(1, opponent.choose_action())
-            if game.winner is None:
-                game.flip_tiles()
         wins += int(game.winner == 0)
         losses += int(game.winner == 1)
     return {"games": games, "wins": wins, "losses": losses, "win_rate": wins / games}

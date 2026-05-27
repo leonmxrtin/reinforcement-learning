@@ -91,10 +91,6 @@ def main(argv=None):
         play_turn(game, 0)
         if game.winner is None:
             play_turn(game, 1, opponent)
-        if game.winner is None:
-            changed = game.flip_tiles()
-            text = ", ".join(str(tile) for tile in changed) if changed else "none"
-            print(f"Slime changed on tiles: {text}")
 
     print_board(game)
     print(f"\nGame over: Player {game.winner + 1} wins!")

@@ -29,6 +29,7 @@ class Game:
         self.slime_positions = [False] + [self.rng.random() < 0.5 for _ in range(1, self.goal_tile)] + [False]
         self.winner = None
         self.round = 0
+        self.current_player = 0
     
     def legal_actions(self, player):
         if self.winner is not None:
@@ -51,6 +52,9 @@ class Game:
         return 0 < tile < self.goal_tile and self.slime_positions[tile]
     
     def apply_action(self, player, action):
+        if player != self.current_player:
+            raise ValueError(f"Wrong turn: Player {self.current_player + 1} must go")
+
         if action not in self.legal_actions(player):
             raise ValueError(f"Illegal action: {action}")
         
@@ -63,12 +67,14 @@ class Game:
 
         if end >= self.goal_tile:
             self.winner = player
+        elif player == 1:
+            self.flip_tiles()
+        else:
+            self.current_player += 1
 
     def flip_tiles(self):
-        changed = []
         for tile in range(1, self.goal_tile):
             if tile not in self.player_positions and self.rng.random() < 0.5:
                 self.slime_positions[tile] = not self.slime_positions[tile]
-                changed.append(tile)
         self.round += 1
-        return changed
+        self.current_player = 0
