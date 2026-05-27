@@ -13,11 +13,11 @@ TRAINING_OPPONENTS = ("mixed", *DUMMY_PLAYERS)
 
 @dataclass(frozen=True)
 class RewardConfig:
-    win: float = 5.0
-    loss: float = -3.0
-    step: float = -0.04
-    progress: float = 0.15
-    fall: float = -0.02
+    win: float = 10.0
+    loss: float = -10.0
+    step: float = -0.02
+    progress: float = 0.20
+    fall: float = -1
 
 
 @dataclass(frozen=True)
@@ -30,6 +30,7 @@ class TrainingConfig:
     epsilon_decay: float = 0.9995
     seed: int = 42
     track_length: int = 10
+    max_rounds: int = 200
     opponent: str = "mixed"
 
 
@@ -59,6 +60,10 @@ def state_key(game, player):
 def fell(game, action, old_position, new_position):
     target = min(old_position + action.jump_distance, game.goal_tile)
     return action is not Action.STAY and target != 0 and new_position == 0
+
+
+def reached_round_limit(game, max_rounds):
+    return max_rounds is not None and game.round >= max_rounds
 
 
 class QLearningPlayer(Player):
@@ -118,7 +123,7 @@ def train(config=None, rewards=None):
     rewards = rewards or RewardConfig()
     q_table = {}
     epsilon = config.epsilon_start
-    stats = {"wins": 0, "losses": 0}
+    stats = {"wins": 0, "losses": 0, "timeouts": 0}
 
     for episode in range(config.episodes):
         game = Game(config.track_length, config.seed + episode)
@@ -130,7 +135,7 @@ def train(config=None, rewards=None):
             opponent_name = game.rng.choice(MIXED_OPPONENTS)
         opponent = make_dummy_player(opponent_name, game, 1)
 
-        while game.winner is None:
+        while game.winner is None and not reached_round_limit(game, config.max_rounds):
             key = state_key(game, 0)
             old_position = game.player_positions[0]
             action = learner.choose_action(explore=True)
@@ -140,45 +145,67 @@ def train(config=None, rewards=None):
                 game.apply_action(1, opponent.choose_action())
 
             reward = reward_for_round(game, rewards, old_position, action, game.winner)
-            next_key = None if game.winner is not None else state_key(game, 0)
+            terminal = game.winner is not None or reached_round_limit(game, config.max_rounds)
+            next_key = None if terminal else state_key(game, 0)
             next_actions = () if next_key is None else game.legal_actions(0)
             learner.update(key, action, reward, next_key, next_actions)
 
         stats["wins"] += int(game.winner == 0)
         stats["losses"] += int(game.winner == 1)
+        stats["timeouts"] += int(game.winner is None)
         epsilon = max(config.epsilon_end, epsilon * config.epsilon_decay)
 
     return QLearningPlayer(None, 0, q_table, config.epsilon_end), stats
 
 
-def evaluate(player, games=1000, track_length=10, opponent_name="balanced", seed=1000):
-    wins = losses = 0
+def evaluate(player, games=1000, track_length=10, opponent_name="balanced", seed=1000, max_rounds=200):
+    wins = losses = timeouts = 0
     for i in range(games):
         game = Game(track_length, seed + i)
         learner = player.copy_for(game, 0)
         opponent = make_dummy_player(opponent_name, game, 1)
-        while game.winner is None:
+        while game.winner is None and not reached_round_limit(game, max_rounds):
             game.apply_action(0, learner.choose_action())
             if game.winner is None:
                 game.apply_action(1, opponent.choose_action())
         wins += int(game.winner == 0)
         losses += int(game.winner == 1)
-    return {"games": games, "wins": wins, "losses": losses, "win_rate": wins / games}
+        timeouts += int(game.winner is None)
+    return {
+        "games": games,
+        "wins": wins,
+        "losses": losses,
+        "timeouts": timeouts,
+        "win_rate": wins / games,
+        "loss_rate": losses / games,
+        "timeout_rate": timeouts / games,
+        "max_rounds": max_rounds,
+    }
 
 
-def evaluate_dummy(player_name, games=1000, track_length=10, opponent_name="balanced", seed=1000):
-    wins = losses = 0
+def evaluate_dummy(player_name, games=1000, track_length=10, opponent_name="balanced", seed=1000, max_rounds=200):
+    wins = losses = timeouts = 0
     for i in range(games):
         game = Game(track_length, seed + i)
         player = make_dummy_player(player_name, game, 0)
         opponent = make_dummy_player(opponent_name, game, 1)
-        while game.winner is None:
+        while game.winner is None and not reached_round_limit(game, max_rounds):
             game.apply_action(0, player.choose_action())
             if game.winner is None:
                 game.apply_action(1, opponent.choose_action())
         wins += int(game.winner == 0)
         losses += int(game.winner == 1)
-    return {"games": games, "wins": wins, "losses": losses, "win_rate": wins / games}
+        timeouts += int(game.winner is None)
+    return {
+        "games": games,
+        "wins": wins,
+        "losses": losses,
+        "timeouts": timeouts,
+        "win_rate": wins / games,
+        "loss_rate": losses / games,
+        "timeout_rate": timeouts / games,
+        "max_rounds": max_rounds,
+    }
 
 
 def save_player(path, player, config, rewards):

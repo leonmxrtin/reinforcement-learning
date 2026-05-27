@@ -30,6 +30,7 @@ def main(argv=None):
     parser.add_argument("--eval-games", type=int, default=1000)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--track-length", type=int, default=10)
+    parser.add_argument("--max-rounds", type=int, default=200)
     parser.add_argument("--alpha", type=float, default=0.15)
     parser.add_argument("--gamma", type=float, default=0.90)
     parser.add_argument("--epsilon-start", type=float, default=0.30)
@@ -47,6 +48,7 @@ def main(argv=None):
             episodes=episodes,
             seed=args.seed,
             track_length=args.track_length,
+            max_rounds=args.max_rounds,
             opponent=args.train_opponent,
             alpha=args.alpha,
             gamma=args.gamma,
@@ -67,6 +69,7 @@ def main(argv=None):
                 track_length=args.track_length,
                 opponent_name=opponent,
                 seed=args.seed + 1000 + offset,
+                max_rounds=args.max_rounds,
             )
             baseline = evaluate_dummy(
                 "random",
@@ -74,6 +77,7 @@ def main(argv=None):
                 track_length=args.track_length,
                 opponent_name=opponent,
                 seed=args.seed + 1000 + offset,
+                max_rounds=args.max_rounds,
             )
             evaluations[opponent] = result
             baselines[opponent] = baseline
@@ -83,9 +87,13 @@ def main(argv=None):
                 "eval_opponent": opponent,
                 "seed": args.seed,
                 "games": result["games"],
+                "max_rounds": args.max_rounds,
                 "wins": result["wins"],
                 "losses": result["losses"],
+                "timeouts": result["timeouts"],
                 "win_rate": result["win_rate"],
+                "loss_rate": result["loss_rate"],
+                "timeout_rate": result["timeout_rate"],
                 "random_baseline": baseline["win_rate"],
                 "improvement_pp": round((result["win_rate"] - baseline["win_rate"]) * 100, 1),
                 "known_states": len(player.q_table),
