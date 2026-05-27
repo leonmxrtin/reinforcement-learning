@@ -1,18 +1,17 @@
 from game import Action
 
-
 class Player:
     name = "player"
 
-    def __init__(self, game, player):
+    def __init__(self, game, player_idx):
         self.game = game
-        self.player = player
+        self.player_idx = player_idx
 
     def legal_actions(self):
-        return self.game.legal_actions(self.player)
+        return self.game.legal_actions(self.player_idx)
 
     def position(self):
-        return self.game.player_positions[self.player]
+        return self.game.player_positions[self.player_idx]
 
     def target_is_slimy(self, tile):
         return self.game.is_slimy(tile)
