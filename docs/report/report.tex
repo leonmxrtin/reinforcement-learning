@@ -841,12 +841,22 @@ an appropriate, explainable, and reproducible solution.
 
 \section*{Use of Generative AI}
 
-Generative AI assistance was used during project planning, code review,
-implementation refactoring, experiment interpretation, and report drafting. The
-assistance was used to compare design alternatives, identify bugs such as Q-table
-sharing and state-space growth, and improve the clarity of the final explanation.
-All algorithmic decisions, code behavior, and reported results should be reviewed
-and understood by the student before submission and defense.
+Generative AI assistance was used as a support tool, not as the primary author of
+the project implementation. The game logic in \texttt{game.py}, including the
+action model, player positions, tile flipping, turn progression, and round
+handling, was implemented manually by the student. Most of the Q-learning
+implementation in \texttt{rl.py}, including the Q-table structure, action
+selection, update rule, reward calculation, policy saving, and policy loading, was
+also manually implemented by the student.
+
+The AI assistance was mainly used to review the implementation, identify possible
+bugs or design risks, and help build the experimental workflow around the core
+algorithm. In particular, it helped with experiment scripts, CSV/JSON result
+organization, timeout handling, interpretation of reduced-state versus full-state
+experiments, and drafting or restructuring parts of this report. It also helped
+add the command-line script for playing against a saved JSON policy. All final
+design decisions, code behavior, and experimental conclusions were reviewed by the
+student and should be understood before submission and defense.
 
 \begin{thebibliography}{4}
 
